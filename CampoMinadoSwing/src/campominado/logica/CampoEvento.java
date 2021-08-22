@@ -1,5 +1,5 @@
 package campominado.logica;
 
 public enum CampoEvento {
-ABIR , MARCAR, DESMARCAR , EXPLODIR
+ABRIR , MARCAR, DESMARCAR , EXPLODIR , REINICIAR
 }

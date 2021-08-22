@@ -5,19 +5,43 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class Tabuleiro implements CampoObservador {
-	private int linhas;
-	private int colunas;
-	private int minas;
+	private final int linhas;
+	private final int colunas;
+	private final int minas;
 
 	private final List<Campo> campos = new ArrayList<Campo>();
-	private final List<Consumer<Boolean>> observadores = new ArrayList<>();
+	private final List<Consumer<Resultado>> observadores = new ArrayList<>();
 
-	public void registrarObservador(Consumer<Boolean> observador) {
+	public void registrarObservador(Consumer<Resultado> observador) {
 		observadores.add(observador);
 	}
+	
+	
+	public void paraCada(Consumer<Campo> funcao) {
+		campos.forEach(funcao);
+	}
+	
+
+	public int getLinhas() {
+		return linhas;
+	}
+
+
+
+	public int getColunas() {
+		return colunas;
+	}
+
+
+
+	public int getMinas() {
+		return minas;
+	}
+
+
 
 	public void notificarObservadores(boolean resultado) {
-		observadores.stream().forEach(o -> o.accept(resultado));
+		observadores.stream().forEach(o -> o.accept(new Resultado(resultado)));
 	}
 
 	public Tabuleiro(int linhas, int colunas, int minas) {
@@ -94,7 +118,7 @@ public class Tabuleiro implements CampoObservador {
 		}
 	
 	private void mostrarMinas() {
-		campos.stream().filter(c -> c.isMinado())
+		campos.stream().filter(c -> c.isMinado()).filter(c-> !c.isMarcado())
 		.forEach(c -> c.setAberto(true));
 	}
 
